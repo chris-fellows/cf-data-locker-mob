@@ -14,19 +14,18 @@ namespace CFDataLocker.Interfaces
         List<DataItemType> GetAll();
 
         /// <summary>
-        /// Creates a new data item instance with basic properties set
+        /// Gets utilities from data type internal name
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="instanceType"></param>
+        /// <param name="internalName"></param>
         /// <returns></returns>
-        DataItemBase CreateNewDataItem(string name, Type instanceType);
+        IDataItemTypeUtilities GetUtilities(string internalName);        
 
         /// <summary>
-        /// Navigates to page for edit of data item
+        /// Gets utilities from data type instance type
         /// </summary>
-        /// <param name="dataLockerId"></param>
-        /// <param name="dataItem"></param>
-        void NavigateEditPage(string dataLockerId, DataItemBase dataItem);
+        /// <param name="dataItemInstanceType"></param>
+        /// <returns></returns>
+        IDataItemTypeUtilities GetUtilities(Type dataItemInstanceType);     
 
         /// <summary>
         /// Gets initial set of data items when app is first used. User can delete unused ones.

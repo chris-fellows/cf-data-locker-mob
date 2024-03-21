@@ -1,92 +1,77 @@
-﻿using CFDataLocker.Interfaces;
+﻿using CFDataLocker.Constants;
+using CFDataLocker.Interfaces;
 using CFDataLocker.Models;
+using System.Runtime.CompilerServices;
 
 namespace CFDataLocker.Services
 {
     public class DataItemTypeService : IDataItemTypeService
     {
+        private List<IDataItemTypeUtilities> _utilities = new();
+
+
+        public DataItemTypeService(IEnumerable<IDataItemTypeUtilities> utilities)
+        {
+            _utilities = utilities.ToList();        
+        }
+
         public List<DataItemType> GetAll()
         {           
             var dataItemTypes = new List<DataItemType>()
             {
-                new DataItemType() { Name = LocalizationResources.Instance["DataItemTypeDefault"].ToString(),
+                new DataItemType() { InternalName = DataItemTypeInternalNames.Default,
+                            Name = LocalizationResources.Instance["DataItemTypeDefault"].ToString(),
                             InstanceType = typeof(DataItemDefault) },
-                new DataItemType() { Name = LocalizationResources.Instance["DataItemTypeBankAccount"].ToString(),
+                new DataItemType() { InternalName = DataItemTypeInternalNames.BankAccount,
+                            Name = LocalizationResources.Instance["DataItemTypeBankAccount"].ToString(),
                             InstanceType = typeof(DataItemBankAccount) },
-                new DataItemType() { Name = LocalizationResources.Instance["DataItemTypeCreditCard"].ToString(),
+                new DataItemType() { InternalName = DataItemTypeInternalNames.CreditCard,
+                            Name = LocalizationResources.Instance["DataItemTypeCreditCard"].ToString(),
                             InstanceType = typeof(DataItemCreditCard) },
-                new DataItemType() { Name = LocalizationResources.Instance["DataItemTypeDocument"].ToString(),
+                new DataItemType() { InternalName = DataItemTypeInternalNames.Document,
+                            Name = LocalizationResources.Instance["DataItemTypeDocument"].ToString(),
                             InstanceType = typeof(DataItemDocument) }
             };
             return dataItemTypes;
         }
-        
-        public DataItemBase CreateNewDataItem(string name, Type dataItemType)
-        {            
-            if (dataItemType == typeof(DataItemDefault))
-            {
-                return new DataItemDefault()
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    Contact = new CFDataLocker.Models.Contact(),
-                    Credentials = new AccountCredentials(),
-                    Name = name
-                };
-            }
-            else if (dataItemType == typeof(DataItemBankAccount))
-            {
-                return new DataItemBankAccount()
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    Name = name
-                };
-            }
-            else if (dataItemType == typeof(DataItemCreditCard))
-            {
-                return new DataItemCreditCard()
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    Name = name
-                };
-            }
-            else if (dataItemType == typeof(DataItemDocument))
-            {
-                return new DataItemDocument()
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    Name = name
-                };
-            }
 
-            throw new ApplicationException($"Cannot create data item {dataItemType.Name}");
-        }
-
-        public void NavigateEditPage(string dataLockerId, DataItemBase dataItem)
+        public IDataItemTypeUtilities GetUtilities(string internalName)
         {
-            var parameters = new Dictionary<string, object>
-                {
-                    { "LockerId", dataLockerId },
-                    { "ItemId", dataItem.Id }
-                };
-
-            //Shell.Current.GoToAsync($"{nameof(EditDataItemPage)}?ItemId={dataItem.Id}");            
-            if (dataItem is DataItemDefault)
-            {
-                Shell.Current.GoToAsync(nameof(EditDataItemPage), parameters);
-            }
-            else if (dataItem is DataItemBankAccount)
-            {
-                Shell.Current.GoToAsync(nameof(EditBankAccountPage), parameters);
-            }
-            else if (dataItem is DataItemCreditCard)
-            {
-                Shell.Current.GoToAsync(nameof(EditCreditCardPage), parameters);
-            }
-            else if (dataItem is DataItemDocument)
-            {
-                Shell.Current.GoToAsync(nameof(EditDocumentPage), parameters);
-            }
+            return _utilities.First(u => u.InternalName == internalName);
         }
+
+        public IDataItemTypeUtilities GetUtilities(Type dataItemInstanceType)
+        {
+            var dataItemType = GetAll().First(dit => dit.InstanceType == dataItemInstanceType);
+            return _utilities.First(u => u.InternalName == dataItemType.InternalName);
+        }
+
+        //public void NavigateEditPage(string dataLockerId, DataItemBase dataItem)
+        //{
+        //    var parameters = new Dictionary<string, object>
+        //        {
+        //            { "LockerId", dataLockerId },
+        //            { "ItemId", dataItem.Id }
+        //        };
+
+        //    //Shell.Current.GoToAsync($"{nameof(EditDataItemPage)}?ItemId={dataItem.Id}");            
+        //    if (dataItem is DataItemDefault)
+        //    {
+        //        Shell.Current.GoToAsync(nameof(EditDataItemPage), parameters);
+        //    }
+        //    else if (dataItem is DataItemBankAccount)
+        //    {
+        //        Shell.Current.GoToAsync(nameof(EditBankAccountPage), parameters);
+        //    }
+        //    else if (dataItem is DataItemCreditCard)
+        //    {
+        //        Shell.Current.GoToAsync(nameof(EditCreditCardPage), parameters);
+        //    }
+        //    else if (dataItem is DataItemDocument)
+        //    {
+        //        Shell.Current.GoToAsync(nameof(EditDocumentPage), parameters);
+        //    }
+        //}
 
         public List<DataItemBase> GetInitialDataItems()
         {

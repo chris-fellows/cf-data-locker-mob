@@ -6,6 +6,7 @@ using CommunityToolkit.Maui;
 using CFDataLocker.Utilities;
 using Microsoft.Extensions.DependencyInjection;
 using Android.Runtime;
+using System.Reflection;
 
 namespace CFDataLocker
 {
@@ -25,8 +26,10 @@ namespace CFDataLocker
 
             //builder.Services.AddSingleton<IDataLockerService, MemoryDataLockerService>();
             builder.Services.AddSingleton<IDataItemTypeService, DataItemTypeService>();
+            builder.Services.RegisterAllTypes<IDataItemTypeUtilities>(new[] { Assembly.GetExecutingAssembly() });
             builder.Services.AddSingleton<IEncryptionService, AesEncryptionService>();
-            builder.Services.AddSingleton<ISecureItemService, SecureStorageSecureItemService>();
+            builder.Services.AddSingleton<ISecureItemService, SecureStorageSecureItemService>();            
+
             builder.Services.AddSingleton<IDataLockerService>((options) =>
             {
                 // https://www.msdevbuild.com/2022/07/How-to-use-Net-MAUI-Secure-storage-in-your-Mobile-application-iOS-Android-Windows.html
@@ -52,6 +55,22 @@ namespace CFDataLocker
 #endif
 
             return builder.Build();
+        }
+
+        /// <summary>
+        /// Registers all types implementing interface
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="services"></param>
+        /// <param name="assemblies"></param>
+        /// <param name="lifetime"></param>
+        private static void RegisterAllTypes<T>(this IServiceCollection services, IEnumerable<Assembly> assemblies, ServiceLifetime lifetime = ServiceLifetime.Transient)
+        {
+            var typesFromAssemblies = assemblies.SelectMany(a => a.DefinedTypes.Where(x => x.GetInterfaces().Contains(typeof(T))));
+            foreach (var type in typesFromAssemblies)
+            {
+                services.Add(new ServiceDescriptor(typeof(T), type, lifetime));
+            }
         }
     }
 }

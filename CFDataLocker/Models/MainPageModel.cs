@@ -76,12 +76,17 @@ namespace CFDataLocker.Models
 
         public void EditDataItem(DataItemBase dataItem)
         {
-            _dataItemTypeService.NavigateEditPage(_dataLocker.Id, dataItem);
+            var utilities = _dataItemTypeService.GetUtilities(dataItem.GetType());
+            utilities.NavigateEditPage(_dataLocker.Id, dataItem);
+
+            //_dataItemTypeService.NavigateEditPage(_dataLocker.Id, dataItem);
         }
 
         public DataItemBase AddDataItem(string name, Type dataItemType)
-        {            
-            DataItemBase dataItem = _dataItemTypeService.CreateNewDataItem(name, dataItemType);
+        {
+            //DataItemBase dataItem = _dataItemTypeService.CreateNewDataItem(name, dataItemType);
+            var utilities = _dataItemTypeService.GetUtilities(dataItemType);
+            var dataItem = utilities.CreateNewDataItem(name);
 
             _dataLocker.DataItems.Add(dataItem);
             _dataLocker.DataItems = _dataLocker.DataItems.OrderBy(di => di.Name).ToList();   // Alphabetic order
