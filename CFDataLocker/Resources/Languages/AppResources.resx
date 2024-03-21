@@ -120,6 +120,18 @@
   <data name="Cancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
+  <data name="DataItemTypeBankAccount" xml:space="preserve">
+    <value>Bank Account</value>
+  </data>
+  <data name="DataItemTypeCreditCard" xml:space="preserve">
+    <value>Credit Card</value>
+  </data>
+  <data name="DataItemTypeDefault" xml:space="preserve">
+    <value>Default</value>
+  </data>
+  <data name="DataItemTypeDocument" xml:space="preserve">
+    <value>Document</value>
+  </data>
   <data name="Delete" xml:space="preserve">
     <value>Delete</value>
   </data>

@@ -5,8 +5,7 @@ using CFDataLocker.Resources.Languages;
 namespace CFDataLocker
 {
     /// <summary>
-    /// Localization resources
-    /// https://www.youtube.com/watch?v=cf4sXULR7os
+    /// Localization resources    
     /// </summary>
     public class LocalizationResources : INotifyPropertyChanged
     {

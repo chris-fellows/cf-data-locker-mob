@@ -1,14 +1,9 @@
 ﻿using CFDataLocker.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CFDataLocker.Interfaces
 {
     /// <summary>
-    /// Interface for data locker
+    /// Interface for data locker instances
     /// </summary>
     public interface IDataLockerService
     {        

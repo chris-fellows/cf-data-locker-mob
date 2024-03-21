@@ -14,7 +14,5 @@ namespace CFDataLocker.Interfaces
         string ReadItem(string name);
 
         void WriteItem(string name, string value);
-
-        byte[] GetKey(string type, int byteLength);
     }
 }

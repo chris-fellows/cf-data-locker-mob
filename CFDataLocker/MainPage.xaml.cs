@@ -32,35 +32,6 @@ namespace CFDataLocker
             _model.RefreshDataItems(_model.SelectedDataItem?.Id);                                            
         }
 
-        private void EditDataItem(DataItemBase dataItem)
-        {
-            var parameters = new Dictionary<string, object>
-                {
-                    { "LockerId", _model.DataLockerId },
-                    { "ItemId", dataItem.Id }
-                };
-
-            //Shell.Current.GoToAsync($"{nameof(EditDataItemPage)}?ItemId={dataItem.Id}");
-
-            // TODO: Clean this up, move to another class
-            if (dataItem is DataItemDefault)
-            {
-                Shell.Current.GoToAsync(nameof(EditDataItemPage), parameters);
-            }
-            else if (dataItem is DataItemBankAccount)
-            {
-                Shell.Current.GoToAsync(nameof(EditBankAccountPage), parameters);
-            }
-            else if (dataItem is DataItemCreditCard)
-            {
-                Shell.Current.GoToAsync(nameof(EditCreditCardPage), parameters);
-            }
-            else if (dataItem is DataItemDocument)
-            {
-                Shell.Current.GoToAsync(nameof(EditDocumentPage), parameters);
-            }
-        }
-
         private void DataItemsList_ItemSelected(object? sender, SelectedItemChangedEventArgs e)
         {
             /* Don't edit on select, need to be able to delete selected data item
@@ -73,17 +44,9 @@ namespace CFDataLocker
         }
 
         private void AddBtn_Clicked(object sender, EventArgs e)
-        {
-            Type dataItemType = _model.SelectedDataItemType.Name switch
-            {                
-                "Bank Account" => typeof(DataItemBankAccount),
-                "Credit Card" => typeof(DataItemCreditCard),
-                "Document" => typeof(DataItemDocument),
-                _ => typeof(DataItemDefault)                
-            };
-
-            var dataItem = _model.AddDataItem(_model.LocalizationResources["New"].ToString(), dataItemType);
-            EditDataItem(dataItem);
+        {           
+            var dataItem = _model.AddDataItem(_model.LocalizationResources["New"].ToString(), _model.SelectedDataItemType.InstanceType);
+            _model.EditDataItem(dataItem);
         }
 
         private async void DeleteBtn_Clicked(object sender, EventArgs e)
@@ -106,7 +69,7 @@ namespace CFDataLocker
             var dataItem = (DataItemBase)DataItemsList.SelectedItem;
             if (dataItem != null)
             {
-                EditDataItem(dataItem);
+                _model.EditDataItem(dataItem);
             }
         }
 

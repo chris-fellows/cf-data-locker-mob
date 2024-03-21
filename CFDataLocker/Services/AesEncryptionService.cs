@@ -38,10 +38,7 @@ namespace CFDataLocker.Services
         {
             var iv = GetSecureKey(_ivKeyName, _ivKeyLength);
             var key = GetSecureKey(_keyKeyName, _keyKeyLength);
-            return AesEncryptionUtilities.Encrypt(Convert.ToBase64String(input), key, iv);
-            //var localFile = Path.Combine(FileSystem.AppDataDirectory, "DataItemDocuments", $"{Guid.NewGuid()}.bin");
-            //Directory.CreateDirectory(Path.GetDirectoryName(localFile));
-            //File.WriteAllBytes(localFile, encryptedFile);
+            return AesEncryptionUtilities.Encrypt(Convert.ToBase64String(input), key, iv);           
         }
 
         public byte[] DecryptFromByteArray(byte[] input)

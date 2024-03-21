@@ -1,8 +1,6 @@
-﻿//using Android.Runtime;
-using CFDataLocker.Interfaces;
+﻿using CFDataLocker.Interfaces;
 using CFDataLocker.Models;
 using CFDataLocker.Utilities;
-using System;
 using System.Text;
 
 namespace CFDataLocker.Services
@@ -13,21 +11,12 @@ namespace CFDataLocker.Services
     public class XmlDataLockerService : IDataLockerService
     {
         private readonly string _folder;
-        private readonly IEncryptionService _encryptionService;
-        //private readonly Func<byte[]> _getIV;
-        //private readonly Func<byte[]> _getKey;      
+        private readonly IEncryptionService _encryptionService;       
 
-        public XmlDataLockerService(string folder, IEncryptionService encryptionService)    // Func<byte[]> getIV, Func<byte[]> getKey)                                    
+        public XmlDataLockerService(string folder, IEncryptionService encryptionService)                         
         {
             _folder = folder;
             _encryptionService = encryptionService;
-
-            //_getIV = getIV;
-            //_getIV = () => secureItemService.GetKey("IV", 16);
-            //_getKey = () => secureItemService.GetKey("Key", 32);
-            //_getKey = getKey;
-            //_iv = iv;
-            //_key = key;
         }
 
         // App only needs to use data locker for current user
@@ -76,16 +65,7 @@ namespace CFDataLocker.Services
         }
 
         public void Delete(string id)
-        {
-            //if (String.IsNullOrEmpty(id))
-            //{
-            //    var files = Directory.GetFiles(_folder, "*.locker");
-            //    foreach (var currentFile in files)
-            //    {
-            //        File.Delete(currentFile);
-            //    }
-            //}
-
+        {          
             var file = Path.Combine(_folder, $"{id}.locker");
             if (File.Exists(file)) File.Delete(file);
         }
@@ -145,14 +125,14 @@ namespace CFDataLocker.Services
             dataItem.Pin = _encryptionService.EncryptToBase64String(dataItem.Pin);  // Convert.ToBase64String(AesEncryptionUtilities.Encrypt(dataItem.Pin, key, iv));
         }
 
-        private  void Encrypt(AccountCredentials accountCredentials)
+        private void Encrypt(AccountCredentials accountCredentials)
         {
             accountCredentials.Reference = _encryptionService.EncryptToBase64String(accountCredentials.Reference);  // Convert.ToBase64String(AesEncryptionUtilities.Encrypt(accountCredentials.Reference, key, iv));
             accountCredentials.UserName = _encryptionService.EncryptToBase64String(accountCredentials.UserName);   // Convert.ToBase64String(AesEncryptionUtilities.Encrypt(accountCredentials.UserName, key, iv));
             accountCredentials.Password = _encryptionService.EncryptToBase64String(accountCredentials.Password);    // Convert.ToBase64String(AesEncryptionUtilities.Encrypt(accountCredentials.Password, key, iv));
         }
 
-        private  void Encrypt(CFDataLocker.Models.Contact contact)
+        private void Encrypt(CFDataLocker.Models.Contact contact)
         {
             contact.Email = _encryptionService.EncryptToBase64String(contact.Email);  // Convert.ToBase64String(AesEncryptionUtilities.Encrypt(contact.Email, key, iv));
             contact.PhoneNumber = _encryptionService.EncryptToBase64String(contact.PhoneNumber);    // Convert.ToBase64String(AesEncryptionUtilities.Encrypt(contact.PhoneNumber, key, iv));

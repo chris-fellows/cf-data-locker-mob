@@ -17,6 +17,7 @@ namespace CFDataLocker.Models
 
         public LocalizationResources LocalizationResources => LocalizationResources.Instance;
 
+        private readonly IDataItemTypeService _dataItemTypeService;
         private readonly IDataLockerService _dataLockerService;
 
         private DataLocker _dataLocker;
@@ -28,18 +29,13 @@ namespace CFDataLocker.Models
 
         private List<DataItemType> _dataItemTypes;
 
-        public MainPageModel(IDataLockerService dataLockerService)
+        public MainPageModel(IDataItemTypeService dataItemTypeService,
+                            IDataLockerService dataLockerService)
         {
-            //dataLockerService.Delete("");
+            _dataItemTypeService = dataItemTypeService;
 
             // Set data item types
-            _dataItemTypes = new List<DataItemType>()
-            {
-                new DataItemType() { Name = "Default" },
-                new DataItemType() { Name = "Bank Account" },
-                new DataItemType() { Name = "Credit Card" },
-                new DataItemType() { Name = "Document" }
-            };
+            _dataItemTypes = _dataItemTypeService.GetAll();
             SelectedDataItemType = _dataItemTypes.First();
 
             _dataLockerService = dataLockerService;
@@ -60,40 +56,7 @@ namespace CFDataLocker.Models
                 {
                     Id = Guid.NewGuid().ToString(),
                     UserName = Environment.UserName,                    
-                    DataItems = new()
-                    {
-                        new DataItemDefault()
-                        {
-                            Id = Guid.NewGuid().ToString(),
-                            Name = "Default",
-                            Contact = new(),
-                            Credentials = new(),
-                            URL = "https://www.google.co.uk"
-                        },
-                        new DataItemBankAccount()
-                        {
-                            Id = Guid.NewGuid().ToString(),
-                            Name = "My Bank Account",
-                            AccountName = "Mr J Smith",
-                            AccountNumber = "12345",
-                            SortCode = "1234"                            
-                        },
-                        new DataItemCreditCard()
-                        {
-                            Id = Guid.NewGuid().ToString(),
-                            Name = "My Credit Card",
-                            CardType = "American Express",
-                            CardNumber = "123456",
-                            SecurityCode = "123",
-                            ExpiryDate = "12/01/30",
-                            Pin = "1234"
-                        },
-                        new DataItemDocument()
-                        {
-                            Id = Guid.NewGuid().ToString(),
-                            Name = "Driving licence",                            
-                        }
-                    }
+                    DataItems = _dataItemTypeService.GetInitialDataItems()
                 };
                 _dataLockerService.Update(_dataLocker);                
             }
@@ -111,44 +74,14 @@ namespace CFDataLocker.Models
         
         public ObservableCollection<DataItemBase> DataItems => _dataItems;
 
-        public DataItemBase AddDataItem(string name, Type dataItemType)
+        public void EditDataItem(DataItemBase dataItem)
         {
-            DataItemBase dataItem = null;
+            _dataItemTypeService.NavigateEditPage(_dataLocker.Id, dataItem);
+        }
 
-            if (dataItemType is DataItemDefault)
-            {
-                dataItem = new DataItemDefault()
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    Contact = new Contact(),
-                    Credentials = new AccountCredentials(),
-                    Name = name
-                };
-            }
-            else if (dataItemType is DataItemBankAccount)
-            {
-                dataItem = new DataItemBankAccount()
-                {
-                    Id = Guid.NewGuid().ToString(),                    
-                    Name = name
-                };
-            }
-            else if (dataItemType is DataItemCreditCard)
-            {
-                dataItem = new DataItemCreditCard()
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    Name = name
-                };
-            }
-            else if (dataItemType is DataItemDocument)
-            {
-                dataItem = new DataItemDocument()
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    Name = name
-                };
-            }
+        public DataItemBase AddDataItem(string name, Type dataItemType)
+        {            
+            DataItemBase dataItem = _dataItemTypeService.CreateNewDataItem(name, dataItemType);
 
             _dataLocker.DataItems.Add(dataItem);
             _dataLocker.DataItems = _dataLocker.DataItems.OrderBy(di => di.Name).ToList();   // Alphabetic order

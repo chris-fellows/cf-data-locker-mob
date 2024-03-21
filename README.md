@@ -22,4 +22,5 @@ How to Add a Document (E.g. Photo)
 Known Issues
 ------------
 - UI needs cleaning up.
+- Models for data item views need to be refactored to share code because they're similar.
 - Document image needs functions to show the image full screen.

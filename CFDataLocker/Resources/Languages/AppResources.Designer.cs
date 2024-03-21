@@ -70,6 +70,42 @@ namespace CFDataLocker.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Bank Account.
+        /// </summary>
+        internal static string DataItemTypeBankAccount {
+            get {
+                return ResourceManager.GetString("DataItemTypeBankAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Credit Card.
+        /// </summary>
+        internal static string DataItemTypeCreditCard {
+            get {
+                return ResourceManager.GetString("DataItemTypeCreditCard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Default.
+        /// </summary>
+        internal static string DataItemTypeDefault {
+            get {
+                return ResourceManager.GetString("DataItemTypeDefault", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Document.
+        /// </summary>
+        internal static string DataItemTypeDocument {
+            get {
+                return ResourceManager.GetString("DataItemTypeDocument", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Delete.
         /// </summary>
         internal static string Delete {

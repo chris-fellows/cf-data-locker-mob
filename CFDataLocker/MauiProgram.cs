@@ -12,9 +12,7 @@ namespace CFDataLocker
     public static class MauiProgram
     {        
         public static MauiApp CreateMauiApp()
-        {
-            //CFDataLocker.Utilities.AesEncryptionUtilities.Test();
-
+        {            
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
@@ -26,15 +24,15 @@ namespace CFDataLocker
                 });
 
             //builder.Services.AddSingleton<IDataLockerService, MemoryDataLockerService>();
+            builder.Services.AddSingleton<IDataItemTypeService, DataItemTypeService>();
             builder.Services.AddSingleton<IEncryptionService, AesEncryptionService>();
             builder.Services.AddSingleton<ISecureItemService, SecureStorageSecureItemService>();
             builder.Services.AddSingleton<IDataLockerService>((options) =>
             {
                 // https://www.msdevbuild.com/2022/07/How-to-use-Net-MAUI-Secure-storage-in-your-Mobile-application-iOS-Android-Windows.html
                 //byte[] key = new byte[32]; // 256-bit key
-                //byte[] iv = new byte[16];  // 128-bit IV
-                var encryptionService = options.GetService<IEncryptionService>();                
-                return new XmlDataLockerService(FileSystem.AppDataDirectory, encryptionService);                                       
+                //byte[] iv = new byte[16];  // 128-bit IV                
+                return new XmlDataLockerService(FileSystem.AppDataDirectory, options.GetService<IEncryptionService>());                                       
             });            
 
             // Register pages & models
@@ -48,7 +46,6 @@ namespace CFDataLocker
             builder.Services.AddTransient<EditCreditCardPage>();
             builder.Services.AddTransient<EditDocumentPageModel>();
             builder.Services.AddTransient<EditDocumentPage>();
-
 
 #if DEBUG
             builder.Logging.AddDebug();
