@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:lang="clr-namespace:CFDataLocker.Resources.Languages"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:Class="CFDataLocker.EditCreditCardPage"
+             Title="Edit Credit Card">
+    
+    <VerticalStackLayout Spacing="10" Margin="20, 20, 20, 0">
+        <Frame Padding="10, 2, 10, 2">
+            <HorizontalStackLayout>
+                <Label Text="{Binding LocalizationResources[EditContactNameLabel], Mode=OneWay}" VerticalOptions="Center" />
+                <Entry x:Name="NameEntry"  
+              VerticalOptions="Center"
+              BindingContext="{Binding SelectedDataItem}"
+              MaxLength="100"
+              Text="{Binding Name, Mode=TwoWay}">
+                    <Entry.Behaviors>
+                        <toolkit:TextValidationBehavior x:Name="NameValidator"
+                           Flags="ValidateOnAttaching,ValidateOnValueChanged"
+                           MinimumLength="1"
+                           MaximumLength="100" />
+                    </Entry.Behaviors>
+                </Entry>
+            </HorizontalStackLayout>
+        </Frame>
+
+        <Frame Padding="10, 2, 10, 2">
+            <HorizontalStackLayout>
+                <Label Text="{Binding LocalizationResources[EditCreditCardTypeLabel], Mode=OneWay}" VerticalOptions="Center" />
+                <Entry x:Name="CardTypeEntry"  
+        VerticalOptions="Center"
+        BindingContext="{Binding SelectedDataItem}"
+        MaxLength="100"
+        Text="{Binding CardType, Mode=TwoWay}">
+                    <Entry.Behaviors>
+                        <toolkit:TextValidationBehavior x:Name="CardTypeValidator"
+                 Flags="ValidateOnAttaching,ValidateOnValueChanged"
+                 MinimumLength="1"
+                 MaximumLength="100" />
+                    </Entry.Behaviors>
+                </Entry>
+            </HorizontalStackLayout>
+        </Frame>
+
+        <Frame Padding="10, 2, 10, 2">
+            <HorizontalStackLayout>
+                <Label Text="{Binding LocalizationResources[EditCreditCardNumberLabel], Mode=OneWay}" VerticalOptions="Center" />
+                <Entry x:Name="CardNumberEntry"  
+            VerticalOptions="Center"
+            BindingContext="{Binding SelectedDataItem}"
+            MaxLength="100"
+            Text="{Binding CardNumber, Mode=TwoWay}">
+                    <Entry.Behaviors>
+                        <toolkit:TextValidationBehavior x:Name="CardNumberValidator"
+                     Flags="ValidateOnAttaching,ValidateOnValueChanged"
+                     MinimumLength="1"
+                     MaximumLength="100" />
+                    </Entry.Behaviors>
+                </Entry>
+            </HorizontalStackLayout>
+        </Frame>
+
+        <Frame Padding="10, 2, 10, 2">
+            <HorizontalStackLayout>
+                <Label Text="{Binding LocalizationResources[EditCreditCardSecurityCodeLabel], Mode=OneWay}" VerticalOptions="Center" />
+                <Entry x:Name="SecurityCodeEntry"  
+                VerticalOptions="Center"
+                BindingContext="{Binding SelectedDataItem}"
+                MaxLength="100"
+                Text="{Binding SecurityCode, Mode=TwoWay}">
+                    <Entry.Behaviors>
+                        <toolkit:TextValidationBehavior x:Name="SecurityCodeValidator"
+                 Flags="ValidateOnAttaching,ValidateOnValueChanged"
+                 MinimumLength="1"
+                 MaximumLength="100" />
+                    </Entry.Behaviors>
+                </Entry>
+            </HorizontalStackLayout>
+        </Frame>
+
+        <Frame Padding="10, 2, 10, 2">
+            <HorizontalStackLayout>
+                <Label Text="{Binding LocalizationResources[EditCreditCardExpiryDateLabel], Mode=OneWay}" VerticalOptions="Center" />
+                <Entry x:Name="ExpiryDateEntry"  
+        VerticalOptions="Center"
+        BindingContext="{Binding SelectedDataItem}"
+        MaxLength="100"
+        Text="{Binding ExpiryDate, Mode=TwoWay}">
+                    <Entry.Behaviors>
+                        <toolkit:TextValidationBehavior x:Name="ExpiryDateValidator"
+         Flags="ValidateOnAttaching,ValidateOnValueChanged"
+         MinimumLength="1"
+         MaximumLength="100" />
+                    </Entry.Behaviors>
+                </Entry>
+            </HorizontalStackLayout>
+        </Frame>
+
+        <Frame Padding="10, 2, 10, 2">
+            <HorizontalStackLayout>
+                <Label Text="{Binding LocalizationResources[EditCreditCardPinLabel], Mode=OneWay}" VerticalOptions="Center" />
+                <Entry x:Name="PinEntry"  
+       VerticalOptions="Center"
+       BindingContext="{Binding SelectedDataItem}"
+       MaxLength="100"
+       Text="{Binding Pin, Mode=TwoWay}">
+                        <Entry.Behaviors>
+                        <toolkit:TextValidationBehavior x:Name="PinValidator"
+        Flags="ValidateOnAttaching,ValidateOnValueChanged"
+        MinimumLength="1"
+        MaximumLength="100" />  
+                    </Entry.Behaviors>
+                </Entry>
+            </HorizontalStackLayout>
+        </Frame>
+
+        <Frame Padding="10, 2, 10, 2">
+            <HorizontalStackLayout>
+                <Label Text="{Binding LocalizationResources[EditContactNotesLabel], Mode=OneWay}" VerticalOptions="Center" />
+                <Editor x:Name="NotesEditor" 
+        VerticalOptions="Center"
+        HeightRequest="150"
+        BindingContext="{Binding SelectedDataItem}"             
+        Text="{Binding Notes, Mode=TwoWay}"                                       
+    />
+            </HorizontalStackLayout>
+        </Frame>
+
+        <HorizontalStackLayout>
+            <Button x:Name="SaveBtn"
+         Clicked="SaveBtn_Clicked"
+         Text="{Binding LocalizationResources[Save], Mode=OneWay}" />
+
+            <Button x:Name="CancelBtn"
+         Clicked="CancelBtn_Clicked"
+         Text="{Binding LocalizationResources[Cancel], Mode=OneWay}" />
+        </HorizontalStackLayout>
+    </VerticalStackLayout>
+</ContentPage>

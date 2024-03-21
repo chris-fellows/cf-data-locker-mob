@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:lang="clr-namespace:CFDataLocker.Resources.Languages"             
+             x:Class="CFDataLocker.MainPage">
+
+    <Grid RowDefinitions="*, 50"
+          ColumnDefinitions="*">
+
+        <ListView Background="Transparent"               
+              x:Name="DataItemsList" 
+              Grid.Row="0"
+              Grid.Column="0"
+              RowHeight="40"
+              ItemsSource="{Binding DataItems}" SelectedItem="{Binding SelectedDataItem, Mode=TwoWay}" >
+
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <TextCell Text="{Binding Name}" />
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+        <HorizontalStackLayout Grid.Row="1" Grid.Column="0">
+            <Button x:Name="TestButton1"
+                    Text="{x:Static lang:AppResources.MainAddButtonText}" />
+
+            <Button x:Name="TestButton12"
+                    Text="{Binding LocalizationResources[MainAddButtonText], Mode=OneWay}" />
+
+            <Button x:Name="EditBtn"
+                 Text="{Binding LocalizationResources[MainEditButtonText], Mode=OneWay}"
+                 Clicked="EditBtn_Clicked"
+                 IsEnabled="{Binding IsDataItemSelected}"
+                 />
+
+            <Button x:Name="AddBtn"
+                Text="{Binding LocalizationResources[MainAddButtonText], Mode=OneWay}"
+                Clicked="AddBtn_Clicked"
+                />
+
+            <Button x:Name="DeleteBtn"
+                    Text="{Binding LocalizationResources[MainDeleteButtonText], Mode=OneWay}"
+                    Clicked="DeleteBtn_Clicked" 
+                    IsEnabled="{Binding IsDataItemSelected}"
+                     />
+
+            <Picker x:Name="DataItemTypePicker" 
+                   SelectedIndexChanged="DataItemTypePicker_SelectedIndexChanged"
+                ItemsSource="{Binding DataItemTypes}" ItemDisplayBinding="{Binding Name}" SelectedItem="{Binding SelectedDataItemType, Mode=TwoWay}"
+                />
+        </HorizontalStackLayout>
+    </Grid>
+    
+</ContentPage>
