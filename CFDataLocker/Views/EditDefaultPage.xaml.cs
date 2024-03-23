@@ -1,4 +1,4 @@
-using CFDataLocker.Models;
+using CFDataLocker.ViewModels;
 
 namespace CFDataLocker;
 
@@ -7,11 +7,11 @@ namespace CFDataLocker;
 /// </summary>
 [QueryProperty(nameof(DataLockerId), "LockerId")]
 [QueryProperty(nameof(DataItemId), "ItemId")]
-public partial class EditDataItemPage : ContentPage
+public partial class EditDefaultPage : ContentPage
 {
-	private readonly EditDataItemPageModel _model;
+	private readonly EditDefaultPageModel _model;
 
-	public EditDataItemPage(EditDataItemPageModel model)
+	public EditDefaultPage(EditDefaultPageModel model)
 	{
 		InitializeComponent();
 		

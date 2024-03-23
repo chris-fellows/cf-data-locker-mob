@@ -1,4 +1,4 @@
-using CFDataLocker.Models;
+using CFDataLocker.ViewModels;
 
 namespace CFDataLocker;
 

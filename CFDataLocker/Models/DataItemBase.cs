@@ -3,7 +3,7 @@
 namespace CFDataLocker.Models
 {
     /// <summary>
-    /// Abstract data item. Specific data item classes derive from this.
+    /// Base for data items
     /// </summary>
     [XmlInclude(typeof(DataItemDefault))]
     [XmlInclude(typeof(DataItemBankAccount))]
@@ -11,10 +11,19 @@ namespace CFDataLocker.Models
     [XmlInclude(typeof(DataItemDocument))]
     public abstract class DataItemBase : ICloneable
     {
+        /// <summary>
+        /// Unique Id
+        /// </summary>
         public string Id { get; set; } = String.Empty;
 
+        /// <summary>
+        /// Name of data item
+        /// </summary>
         public string Name { get; set; } = String.Empty;
 
+        /// <summary>
+        /// Extra notes
+        /// </summary>
         public string Notes { get; set; } = String.Empty;
 
         public virtual object Clone()

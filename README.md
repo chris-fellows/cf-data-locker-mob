@@ -19,8 +19,9 @@ How to Add a Document (E.g. Photo)
 2) From the app then add a data item of type "Document" and select the photo.
 3) Delete the original photo for security purposes.
 
-Known Issues
-------------
+Comments
+--------
 - UI needs cleaning up.
 - Models for data item views need to be refactored to share code because they're similar.
 - Document image needs functions to show the image full screen.
+- Need to add unit tests.

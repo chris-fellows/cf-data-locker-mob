@@ -1,17 +1,16 @@
-﻿namespace CFDataLocker.Models
+﻿using CFDataLocker.Enums;
+
+namespace CFDataLocker.Models
 {
     /// <summary>
     /// Data item type
     /// </summary>
     public class DataItemType
-    {
-        public string InternalName { get; set; } = String.Empty;
+    {        
+        public DataItemTypes ItemType { get; set; } = DataItemTypes.Default;
 
-        public string Name { get; set; } = String.Empty;           
-
-        /// <summary>
-        /// Instance type. Type derived from DataItemBase.
-        /// </summary>
-        public Type InstanceType { get; set; }
+        public string Name { get; set; } = String.Empty;
+        
+        public Type ModelInstanceType { get; set; } = typeof(System.Object);
     }
 }

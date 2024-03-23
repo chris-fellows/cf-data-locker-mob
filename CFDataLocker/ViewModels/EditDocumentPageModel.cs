@@ -1,15 +1,14 @@
-﻿using CFDataLocker.Interfaces;
-using CFDataLocker.Utilities;
-using System;
-using System.Collections.Generic;
+﻿using CFDataLocker.Exceptions;
+using CFDataLocker.Interfaces;
+using CFDataLocker.Models;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace CFDataLocker.Models
+namespace CFDataLocker.ViewModels
 {
+    /// <summary>
+    /// Model for edit of document data item
+    /// </summary>
     public class EditDocumentPageModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler? PropertyChanged;
@@ -59,12 +58,12 @@ namespace CFDataLocker.Models
         /// </summary>
         private void OnQueryPropertySet()
         {
-            if (!String.IsNullOrEmpty(_dataLockerId) &&
-                !String.IsNullOrEmpty(_dataItemId))     // Load data locker & item
+            if (!string.IsNullOrEmpty(_dataLockerId) &&
+                !string.IsNullOrEmpty(_dataItemId))     // Load data locker & item
             {
                 _dataLocker = _dataLockerService.GetById(_dataLockerId);
                 _dataItem = (DataItemDocument)_dataLocker.DataItems.First(di => di.Id == _dataItemId);
-                
+
                 OnPropertyChanged(nameof(DocumentImageSource));
                 OnPropertyChanged(nameof(SelectedDataItem));
             }
@@ -79,23 +78,6 @@ namespace CFDataLocker.Models
         {
             _dataLockerService.Update(_dataLocker);
         }
-        
-        ///// <summary>
-        ///// Document file path
-        ///// TODO: Remove this
-        ///// </summary>
-        //public string DocumentFilePath
-        //{
-        //    get
-        //    {
-        //        // TODO: Change this to store encrypted file and then decrypt on display
-        //        if (_dataItem != null)
-        //        {                    
-        //            return _dataItem.FilePath;
-        //        }
-        //        return null;
-        //    }
-        //}
 
         /// <summary>
         /// Document as ImageSource
@@ -104,25 +86,34 @@ namespace CFDataLocker.Models
         {
             get
             {
-                if (_dataItem != null && !String.IsNullOrEmpty(_dataItem.FilePath))
+                if (_dataItem != null && !string.IsNullOrEmpty(_dataItem.FilePath))
                 {
-                    var fileBytes = _encryptionService.DecryptFromByteArray(File.ReadAllBytes(_dataItem.FilePath));
-                    MemoryStream memoryStream = new MemoryStream(fileBytes);
-                    ImageSource imageSource = ImageSource.FromStream(() => memoryStream);
-                    return imageSource;
+                    try
+                    {
+                        var fileBytes = _encryptionService.DecryptFromByteArray(File.ReadAllBytes(_dataItem.FilePath));
+                        MemoryStream memoryStream = new MemoryStream(fileBytes);
+                        var imageSource = ImageSource.FromStream(() => memoryStream);
+                        return imageSource;
+                    }
+                    catch (Exception exception)
+                    {
+                        throw new DataLockerException($"Document file is corrupt", exception);
+                    }
+                }
+                else if (!File.Exists(_dataItem.FilePath))
+                {
+                    throw new FileNotFoundException("Document file does not exist");
                 }
                 return null;
             }
         }
 
         /// <summary>
-        /// Selects the document file from storage and creates an encrypted version in the app's folder
-        /// 
-        /// TODO: Clean this code up
+        /// Selects the document file from storage and creates an encrypted version in the app's folder        
         /// </summary>
         /// <param name="sourceFilePath"></param>
         public void SelectDocumentFilePath(string sourceFilePath)
-        {   
+        {
             // Create local encrypted file
             var localFile = Path.Combine(FileSystem.AppDataDirectory, "DataItemDocuments", $"{Guid.NewGuid()}.bin");
             Directory.CreateDirectory(Path.GetDirectoryName(localFile));
@@ -130,8 +121,8 @@ namespace CFDataLocker.Models
 
             // Set local file
             _dataItem.FilePath = localFile;
-            
+
             OnPropertyChanged(nameof(DocumentImageSource));
-        }       
+        }
     }
 }

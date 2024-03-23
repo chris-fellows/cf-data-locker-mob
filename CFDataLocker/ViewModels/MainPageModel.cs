@@ -4,9 +4,10 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using CFDataLocker.Interfaces;
+using CFDataLocker.Models;
 using Kotlin.Reflect;
 
-namespace CFDataLocker.Models
+namespace CFDataLocker.ViewModels
 {
     /// <summary>
     /// View model for main page listing data items
@@ -22,7 +23,7 @@ namespace CFDataLocker.Models
 
         private DataLocker _dataLocker;
 
-        private ObservableCollection<DataItemBase> _dataItems = new ObservableCollection<DataItemBase>();        
+        private ObservableCollection<DataItemBase> _dataItems = new ObservableCollection<DataItemBase>();
 
         public void OnPropertyChanged([CallerMemberName] string name = "") =>
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
@@ -41,28 +42,21 @@ namespace CFDataLocker.Models
             _dataLockerService = dataLockerService;
 
             // Get data locker for user, create if not exists
-            _dataLocker = _dataLockerService.GetByUserName(Environment.UserName);            
-
-            //// Delete (For testing)
-            //if (_dataLocker != null)
-            //{
-            //    _dataLockerService.Delete(_dataLocker.Id);
-            //    _dataLocker = null;
-            //}
+            _dataLocker = _dataLockerService.GetByUserName(Environment.UserName);
 
             if (_dataLocker == null)   // Create data locker
             {
                 _dataLocker = new DataLocker()
                 {
                     Id = Guid.NewGuid().ToString(),
-                    UserName = Environment.UserName,                    
+                    UserName = Environment.UserName,
                     DataItems = _dataItemTypeService.GetInitialDataItems()
                 };
-                _dataLockerService.Update(_dataLocker);                
+                _dataLockerService.Update(_dataLocker);
             }
-            
+
             //var test = _dataLockerService.GetById(_dataLocker.Id);
-            
+
             _dataItems = new ObservableCollection<DataItemBase>(_dataLocker.DataItems);
         }
 
@@ -71,7 +65,7 @@ namespace CFDataLocker.Models
         public DataItemType SelectedDataItemType { get; set; }
 
         public string? DataLockerId => _dataLocker?.Id;
-        
+
         public ObservableCollection<DataItemBase> DataItems => _dataItems;
 
         public void EditDataItem(DataItemBase dataItem)
@@ -93,7 +87,7 @@ namespace CFDataLocker.Models
             _dataLockerService.Update(_dataLocker);
 
             RefreshDataItems(dataItem.Id);
-           
+
             return dataItem;
         }
 
@@ -120,20 +114,20 @@ namespace CFDataLocker.Models
             OnPropertyChanged(nameof(IsDataItemSelected));
 
             // Set selected data item or unset
-            DataItemBase? selectedDataItem = String.IsNullOrEmpty(selectedDataItemId) ? 
-                    null : 
-                    _dataLocker.DataItems.FirstOrDefault(di => di.Id == selectedDataItemId);            
+            DataItemBase? selectedDataItem = string.IsNullOrEmpty(selectedDataItemId) ?
+                    null :
+                    _dataLocker.DataItems.FirstOrDefault(di => di.Id == selectedDataItemId);
             SelectedDataItem = selectedDataItem;
         }
 
-        public bool IsDataItemSelected => _selectedDataItem != null;        
+        public bool IsDataItemSelected => _selectedDataItem != null;
 
         private DataItemBase? _selectedDataItem;
         public DataItemBase? SelectedDataItem
         {
             get { return _selectedDataItem; }
-            set 
-            { 
+            set
+            {
                 _selectedDataItem = value;
 
                 OnPropertyChanged(nameof(SelectedDataItem));

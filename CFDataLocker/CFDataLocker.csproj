@@ -68,6 +68,9 @@
 	    <AutoGen>True</AutoGen>
 	    <DependentUpon>AppResources.resx</DependentUpon>
 	  </Compile>
+	  <Compile Update="Views\EditDefaultPage.xaml.cs">
+	    <DependentUpon>EditDefaultPage.xaml</DependentUpon>
+	  </Compile>
 	</ItemGroup>
 
 	<ItemGroup>
@@ -78,16 +81,16 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiXaml Update="EditBankAccountPage.xaml">
+	  <MauiXaml Update="Views\EditBankAccountPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="EditCreditCardPage.xaml">
+	  <MauiXaml Update="Views\EditCreditCardPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="EditDataItemPage.xaml">
+	  <MauiXaml Update="Views\EditDefaultPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="EditDocumentPage.xaml">
+	  <MauiXaml Update="Views\EditDocumentPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>

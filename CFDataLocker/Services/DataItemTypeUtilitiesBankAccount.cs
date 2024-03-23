@@ -1,4 +1,4 @@
-﻿using CFDataLocker.Constants;
+﻿using CFDataLocker.Enums;
 using CFDataLocker.Interfaces;
 using CFDataLocker.Models;
 
@@ -9,7 +9,11 @@ namespace CFDataLocker.Services
     /// </summary>
     public class DataItemTypeUtilitiesBankAccount : IDataItemTypeUtilities
     {
-        public string InternalName => DataItemTypeInternalNames.BankAccount;
+        public DataItemTypes DataItemType => DataItemTypes.BankAccount;
+
+        public Type ModelInstanceType => typeof(DataItemBankAccount);
+
+        public string NameResourceName => "DataItemTypeBankAccount";
 
         public DataItemBase CreateNewDataItem(string name)
         {

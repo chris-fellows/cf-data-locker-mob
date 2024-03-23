@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CFDataLocker.Utilities;
-
-namespace CFDataLocker.Models
+﻿namespace CFDataLocker.Models
 {
     /// <summary>
     /// Account credentials (E.g. Log in to website)

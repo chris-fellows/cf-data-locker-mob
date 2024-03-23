@@ -1,36 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using CFDataLocker.Interfaces;
+using CFDataLocker.Models;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using Android.Media;
-using CFDataLocker.Interfaces;
 
-namespace CFDataLocker.Models
+namespace CFDataLocker.ViewModels
 {
-    //public class EditDataItemPageModel : EditDataItemModelBase<DataItemDefault>
-    //{
-    //    public EditDataItemPageModel(IDataLockerService dataLockerService) : base(dataLockerService) { }    
-    //}
-
     /// <summary>
-    /// Edit data item page model
+    /// Model for edit of bank account data item
     /// </summary>
-    public class EditDataItemPageModel : INotifyPropertyChanged
+    public class EditBankAccountPageModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler? PropertyChanged;
         public LocalizationResources LocalizationResources => LocalizationResources.Instance;
 
         private DataLocker _dataLocker = new DataLocker();
-        private DataItemDefault _dataItem = new DataItemDefault();
+        private DataItemBankAccount _dataItem = new DataItemBankAccount();
         private readonly IDataLockerService _dataLockerService;
 
         public void OnPropertyChanged([CallerMemberName] string name = "") =>
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
 
-        public EditDataItemPageModel(IDataLockerService dataLockerService)
+        public EditBankAccountPageModel(IDataLockerService dataLockerService)
         {
             _dataLockerService = dataLockerService;
         }
@@ -61,17 +51,17 @@ namespace CFDataLocker.Models
         /// </summary>
         private void OnQueryPropertySet()
         {
-            if (!String.IsNullOrEmpty(_dataLockerId) &&
-                !String.IsNullOrEmpty(_dataItemId))     // Load data locker & item
+            if (!string.IsNullOrEmpty(_dataLockerId) &&
+                !string.IsNullOrEmpty(_dataItemId))     // Load data locker & item
             {
                 _dataLocker = _dataLockerService.GetById(_dataLockerId);
-                _dataItem = (DataItemDefault)_dataLocker.DataItems.First(di => di.Id == _dataItemId);
+                _dataItem = (DataItemBankAccount)_dataLocker.DataItems.First(di => di.Id == _dataItemId);
 
                 OnPropertyChanged(nameof(SelectedDataItem));
             }
         }
 
-        public DataItemDefault SelectedDataItem
+        public DataItemBankAccount SelectedDataItem
         {
             get { return _dataItem; }
         }

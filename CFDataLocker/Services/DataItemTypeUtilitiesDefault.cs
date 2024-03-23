@@ -1,4 +1,4 @@
-﻿using CFDataLocker.Constants;
+﻿using CFDataLocker.Enums;
 using CFDataLocker.Interfaces;
 using CFDataLocker.Models;
 
@@ -9,7 +9,11 @@ namespace CFDataLocker.Services
     /// </summary>
     public class DataItemTypeUtilitiesDefault : IDataItemTypeUtilities
     {
-        public string InternalName => DataItemTypeInternalNames.Default;
+        public DataItemTypes DataItemType => DataItemTypes.Default;
+
+        public Type ModelInstanceType => typeof(DataItemDefault);
+
+        public string NameResourceName => "DataItemTypeDefault";
 
         public DataItemBase CreateNewDataItem(string name)
         {
@@ -30,7 +34,7 @@ namespace CFDataLocker.Services
                     { "ItemId", dataItem.Id }
                 };
 
-            Shell.Current.GoToAsync(nameof(EditDataItemPage), parameters);
+            Shell.Current.GoToAsync(nameof(EditDefaultPage), parameters);
         }
     }
 }

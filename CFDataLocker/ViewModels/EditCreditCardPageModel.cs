@@ -1,4 +1,5 @@
 ﻿using CFDataLocker.Interfaces;
+using CFDataLocker.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -7,21 +8,24 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CFDataLocker.Models
+namespace CFDataLocker.ViewModels
 {
-    public class EditBankAccountPageModel : INotifyPropertyChanged
+    /// <summary>
+    /// Model for edit of credit card data item
+    /// </summary>
+    public class EditCreditCardPageModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler? PropertyChanged;
         public LocalizationResources LocalizationResources => LocalizationResources.Instance;
 
         private DataLocker _dataLocker = new DataLocker();
-        private DataItemBankAccount _dataItem = new DataItemBankAccount();
+        private DataItemCreditCard _dataItem = new DataItemCreditCard();
         private readonly IDataLockerService _dataLockerService;
 
         public void OnPropertyChanged([CallerMemberName] string name = "") =>
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
 
-        public EditBankAccountPageModel(IDataLockerService dataLockerService)
+        public EditCreditCardPageModel(IDataLockerService dataLockerService)
         {
             _dataLockerService = dataLockerService;
         }
@@ -52,17 +56,17 @@ namespace CFDataLocker.Models
         /// </summary>
         private void OnQueryPropertySet()
         {
-            if (!String.IsNullOrEmpty(_dataLockerId) &&
-                !String.IsNullOrEmpty(_dataItemId))     // Load data locker & item
+            if (!string.IsNullOrEmpty(_dataLockerId) &&
+                !string.IsNullOrEmpty(_dataItemId))     // Load data locker & item
             {
                 _dataLocker = _dataLockerService.GetById(_dataLockerId);
-                _dataItem = (DataItemBankAccount)_dataLocker.DataItems.First(di => di.Id == _dataItemId);
+                _dataItem = (DataItemCreditCard)_dataLocker.DataItems.First(di => di.Id == _dataItemId);
 
                 OnPropertyChanged(nameof(SelectedDataItem));
             }
         }
 
-        public DataItemBankAccount SelectedDataItem
+        public DataItemCreditCard SelectedDataItem
         {
             get { return _dataItem; }
         }

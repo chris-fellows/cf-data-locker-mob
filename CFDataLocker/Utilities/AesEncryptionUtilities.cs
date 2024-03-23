@@ -6,7 +6,7 @@ namespace CFDataLocker.Utilities
     /// <summary>
     /// AES encryption utilities
     /// </summary>
-    internal class AesEncryptionUtilities
+    public class AesEncryptionUtilities
     {
         /// <summary>
         /// Encrypts string
@@ -17,20 +17,20 @@ namespace CFDataLocker.Utilities
         /// <returns></returns>
         public static byte[] Encrypt(string plainText, byte[] key, byte[] iv)
         {
-            using (Aes aesAlg = Aes.Create())
+            using (Aes aes = Aes.Create())
             {
-                aesAlg.Key = key;
-                aesAlg.IV = iv;
-                ICryptoTransform encryptor = aesAlg.CreateEncryptor(aesAlg.Key, aesAlg.IV);
+                aes.Key = key;
+                aes.IV = iv;
+                ICryptoTransform encryptor = aes.CreateEncryptor(aes.Key, aes.IV);
                 byte[] encryptedBytes;
-                using (var msEncrypt = new System.IO.MemoryStream())
+                using (var memoryStream = new System.IO.MemoryStream())
                 {
-                    using (var csEncrypt = new CryptoStream(msEncrypt, encryptor, CryptoStreamMode.Write))
+                    using (var cryptoStream = new CryptoStream(memoryStream, encryptor, CryptoStreamMode.Write))
                     {
                         byte[] plainBytes = Encoding.UTF8.GetBytes(plainText);
-                        csEncrypt.Write(plainBytes, 0, plainBytes.Length);
+                        cryptoStream.Write(plainBytes, 0, plainBytes.Length);
                     }
-                    encryptedBytes = msEncrypt.ToArray();
+                    encryptedBytes = memoryStream.ToArray();
                 }
                 return encryptedBytes;
             }
@@ -45,20 +45,20 @@ namespace CFDataLocker.Utilities
         /// <returns></returns>
         public static string Decrypt(byte[] cipherText, byte[] key, byte[] iv)
         {
-            using (Aes aesAlg = Aes.Create())
+            using (Aes aes = Aes.Create())
             {
-                aesAlg.Key = key;
-                aesAlg.IV = iv;
-                ICryptoTransform decryptor = aesAlg.CreateDecryptor(aesAlg.Key, aesAlg.IV);
+                aes.Key = key;
+                aes.IV = iv;
+                ICryptoTransform decryptor = aes.CreateDecryptor(aes.Key, aes.IV);
                 byte[] decryptedBytes;
-                using (var msDecrypt = new System.IO.MemoryStream(cipherText))
+                using (var streamCipher = new System.IO.MemoryStream(cipherText))
                 {
-                    using (var csDecrypt = new CryptoStream(msDecrypt, decryptor, CryptoStreamMode.Read))
+                    using (var cryptoStream = new CryptoStream(streamCipher, decryptor, CryptoStreamMode.Read))
                     {
-                        using (var msPlain = new System.IO.MemoryStream())
+                        using (var streamPlain = new System.IO.MemoryStream())
                         {
-                            csDecrypt.CopyTo(msPlain);
-                            decryptedBytes = msPlain.ToArray();
+                            cryptoStream.CopyTo(streamPlain);
+                            decryptedBytes = streamPlain.ToArray();
                         }
                     }
                 }
@@ -81,29 +81,29 @@ namespace CFDataLocker.Utilities
             return bytes;
         }
 
-        public static void Test()
-        {
-            string plaintext = "Hello, World!";
-            Console.WriteLine(plaintext);
-            // Generate a random key and IV
-            byte[] key = new byte[32]; // 256-bit key
-            byte[] iv = new byte[16]; // 128-bit IV
-            using (var rng = new RNGCryptoServiceProvider())
-            {
-                rng.GetBytes(key);
-                rng.GetBytes(iv);
-            }
+        //public static void Test()
+        //{
+        //    string plaintext = "Hello, World!";
+        //    Console.WriteLine(plaintext);
+        //    // Generate a random key and IV
+        //    byte[] key = new byte[32]; // 256-bit key
+        //    byte[] iv = new byte[16]; // 128-bit IV
+        //    using (var rng = new RNGCryptoServiceProvider())
+        //    {
+        //        rng.GetBytes(key);
+        //        rng.GetBytes(iv);
+        //    }
 
-            // Encrypt
-            byte[] ciphertext = Encrypt(plaintext, key, iv);
-            string encryptedText = Convert.ToBase64String(ciphertext);
-            Console.WriteLine("Encrypted Text: " + encryptedText);
-            // Decrypt
-            byte[] bytes = Convert.FromBase64String(encryptedText);
-            string decryptedText = Decrypt(bytes, key, iv);
-            Console.WriteLine("Decrypted Text: " + decryptedText);
+        //    // Encrypt
+        //    byte[] ciphertext = Encrypt(plaintext, key, iv);
+        //    string encryptedText = Convert.ToBase64String(ciphertext);
+        //    Console.WriteLine("Encrypted Text: " + encryptedText);
+        //    // Decrypt
+        //    byte[] bytes = Convert.FromBase64String(encryptedText);
+        //    string decryptedText = Decrypt(bytes, key, iv);
+        //    Console.WriteLine("Decrypted Text: " + decryptedText);
 
-            int xxxx = 1000;
-        }
+        //    int xxxx = 1000;
+        //}
     }
 }

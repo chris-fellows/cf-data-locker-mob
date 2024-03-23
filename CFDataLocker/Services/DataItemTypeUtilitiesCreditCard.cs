@@ -1,4 +1,4 @@
-﻿using CFDataLocker.Constants;
+﻿using CFDataLocker.Enums;
 using CFDataLocker.Interfaces;
 using CFDataLocker.Models;
 
@@ -9,7 +9,11 @@ namespace CFDataLocker.Services
     /// </summary>
     public class DataItemTypeUtilitiesCreditCard : IDataItemTypeUtilities
     {
-        public string InternalName => DataItemTypeInternalNames.CreditCard;
+        public DataItemTypes DataItemType => DataItemTypes.CreditCard;
+
+        public Type ModelInstanceType => typeof(DataItemCreditCard);
+
+        public string NameResourceName => "DataItemTypeCreditCard";
 
         public DataItemBase CreateNewDataItem(string name)
         {

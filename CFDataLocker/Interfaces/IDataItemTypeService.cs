@@ -1,4 +1,5 @@
-﻿using CFDataLocker.Models;
+﻿using CFDataLocker.Enums;
+using CFDataLocker.Models;
 
 namespace CFDataLocker.Interfaces
 {
@@ -14,11 +15,11 @@ namespace CFDataLocker.Interfaces
         List<DataItemType> GetAll();
 
         /// <summary>
-        /// Gets utilities from data type internal name
+        /// Gets utilities from data type
         /// </summary>
-        /// <param name="internalName"></param>
+        /// <param name="dataItemType"></param>
         /// <returns></returns>
-        IDataItemTypeUtilities GetUtilities(string internalName);        
+        IDataItemTypeUtilities GetUtilities(DataItemTypes dataItemType);
 
         /// <summary>
         /// Gets utilities from data type instance type

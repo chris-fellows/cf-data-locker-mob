@@ -23,22 +23,5 @@ namespace CFDataLocker.Services
         {
             SecureStorage.SetAsync(name, value).Wait();
         }
-
-        //public byte[] GetKey(string type, int byteLength)
-        //{
-        //    var key = new byte[0];
-        //    var itemKey = $"DataLocker.{type}.{Environment.UserName}";
-        //    var itemValue = ReadItem(itemKey);
-        //    if (String.IsNullOrEmpty(itemValue))    // New random key
-        //    {
-        //        key = AesEncryptionUtilities.CreateRandomKeyOrIV(byteLength);
-        //        WriteItem(itemKey, Convert.ToBase64String(key));
-        //    }
-        //    else   // Existing key
-        //    {
-        //        key = Convert.FromBase64String(itemValue);
-        //    }
-        //    return key;
-        //}
     }
 }

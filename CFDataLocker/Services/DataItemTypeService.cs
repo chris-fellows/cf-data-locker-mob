@@ -1,7 +1,6 @@
-﻿using CFDataLocker.Constants;
+﻿using CFDataLocker.Enums;
 using CFDataLocker.Interfaces;
 using CFDataLocker.Models;
-using System.Runtime.CompilerServices;
 
 namespace CFDataLocker.Services
 {
@@ -16,63 +15,26 @@ namespace CFDataLocker.Services
         }
 
         public List<DataItemType> GetAll()
-        {           
-            var dataItemTypes = new List<DataItemType>()
+        {
+            return _utilities.Select(u => new DataItemType()
             {
-                new DataItemType() { InternalName = DataItemTypeInternalNames.Default,
-                            Name = LocalizationResources.Instance["DataItemTypeDefault"].ToString(),
-                            InstanceType = typeof(DataItemDefault) },
-                new DataItemType() { InternalName = DataItemTypeInternalNames.BankAccount,
-                            Name = LocalizationResources.Instance["DataItemTypeBankAccount"].ToString(),
-                            InstanceType = typeof(DataItemBankAccount) },
-                new DataItemType() { InternalName = DataItemTypeInternalNames.CreditCard,
-                            Name = LocalizationResources.Instance["DataItemTypeCreditCard"].ToString(),
-                            InstanceType = typeof(DataItemCreditCard) },
-                new DataItemType() { InternalName = DataItemTypeInternalNames.Document,
-                            Name = LocalizationResources.Instance["DataItemTypeDocument"].ToString(),
-                            InstanceType = typeof(DataItemDocument) }
-            };
-            return dataItemTypes;
+                ItemType = u.DataItemType,
+                Name = LocalizationResources.Instance[u.NameResourceName].ToString(),
+                ModelInstanceType = u.ModelInstanceType
+            }).OrderBy(i => i.Name).ToList();         
         }
 
-        public IDataItemTypeUtilities GetUtilities(string internalName)
+        public IDataItemTypeUtilities GetUtilities(DataItemTypes dataItemType)
         {
-            return _utilities.First(u => u.InternalName == internalName);
+            return _utilities.First(u => u.DataItemType == dataItemType);
         }
 
         public IDataItemTypeUtilities GetUtilities(Type dataItemInstanceType)
         {
-            var dataItemType = GetAll().First(dit => dit.InstanceType == dataItemInstanceType);
-            return _utilities.First(u => u.InternalName == dataItemType.InternalName);
+            var dataItemType = GetAll().First(dit => dit.ModelInstanceType == dataItemInstanceType);
+            return _utilities.First(u => u.DataItemType == dataItemType.ItemType);
         }
-
-        //public void NavigateEditPage(string dataLockerId, DataItemBase dataItem)
-        //{
-        //    var parameters = new Dictionary<string, object>
-        //        {
-        //            { "LockerId", dataLockerId },
-        //            { "ItemId", dataItem.Id }
-        //        };
-
-        //    //Shell.Current.GoToAsync($"{nameof(EditDataItemPage)}?ItemId={dataItem.Id}");            
-        //    if (dataItem is DataItemDefault)
-        //    {
-        //        Shell.Current.GoToAsync(nameof(EditDataItemPage), parameters);
-        //    }
-        //    else if (dataItem is DataItemBankAccount)
-        //    {
-        //        Shell.Current.GoToAsync(nameof(EditBankAccountPage), parameters);
-        //    }
-        //    else if (dataItem is DataItemCreditCard)
-        //    {
-        //        Shell.Current.GoToAsync(nameof(EditCreditCardPage), parameters);
-        //    }
-        //    else if (dataItem is DataItemDocument)
-        //    {
-        //        Shell.Current.GoToAsync(nameof(EditDocumentPage), parameters);
-        //    }
-        //}
-
+     
         public List<DataItemBase> GetInitialDataItems()
         {
             var dataItems = new List<DataItemBase>()

@@ -1,4 +1,4 @@
-﻿using CFDataLocker.Constants;
+﻿using CFDataLocker.Enums;
 using CFDataLocker.Interfaces;
 using CFDataLocker.Models;
 
@@ -9,7 +9,11 @@ namespace CFDataLocker.Services
     /// </summary>
     public class DataItemTypeUtilitiesDocument : IDataItemTypeUtilities
     {
-        public string InternalName => DataItemTypeInternalNames.Document;
+        public DataItemTypes DataItemType => DataItemTypes.Document;
+
+        public Type ModelInstanceType => typeof(DataItemDocument);
+
+        public string NameResourceName => "DataItemTypeDocument";
 
         public DataItemBase CreateNewDataItem(string name)
         {

@@ -1,4 +1,5 @@
 ﻿using CFDataLocker.Models;
+using CFDataLocker.ViewModels;
 
 namespace CFDataLocker
 {
@@ -45,7 +46,7 @@ namespace CFDataLocker
 
         private void AddBtn_Clicked(object sender, EventArgs e)
         {           
-            var dataItem = _model.AddDataItem(_model.LocalizationResources["New"].ToString(), _model.SelectedDataItemType.InstanceType);
+            var dataItem = _model.AddDataItem(_model.LocalizationResources["New"].ToString(), _model.SelectedDataItemType.ModelInstanceType);
             _model.EditDataItem(dataItem);
         }
 

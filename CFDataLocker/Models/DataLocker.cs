@@ -1,7 +1,7 @@
 ﻿namespace CFDataLocker.Models
 {
     /// <summary>
-    /// Locker for data items for single user
+    /// Locker for data items for particular user.
     /// </summary>
     public class DataLocker : ICloneable
     {

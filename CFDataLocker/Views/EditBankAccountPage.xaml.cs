@@ -1,4 +1,4 @@
-using CFDataLocker.Models;
+using CFDataLocker.ViewModels;
 using Java.Nio.FileNio.Attributes;
 
 namespace CFDataLocker;

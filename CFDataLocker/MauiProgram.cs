@@ -1,12 +1,12 @@
 ﻿using Microsoft.Extensions.Logging;
 using CFDataLocker.Interfaces;
 using CFDataLocker.Services;
-using CFDataLocker.Models;
 using CommunityToolkit.Maui;
 using CFDataLocker.Utilities;
 using Microsoft.Extensions.DependencyInjection;
 using Android.Runtime;
 using System.Reflection;
+using CFDataLocker.ViewModels;
 
 namespace CFDataLocker
 {
@@ -31,18 +31,18 @@ namespace CFDataLocker
             builder.Services.AddSingleton<ISecureItemService, SecureStorageSecureItemService>();            
 
             builder.Services.AddSingleton<IDataLockerService>((options) =>
-            {
-                // https://www.msdevbuild.com/2022/07/How-to-use-Net-MAUI-Secure-storage-in-your-Mobile-application-iOS-Android-Windows.html
-                //byte[] key = new byte[32]; // 256-bit key
-                //byte[] iv = new byte[16];  // 128-bit IV                
+            {                       
                 return new XmlDataLockerService(FileSystem.AppDataDirectory, options.GetService<IEncryptionService>());                                       
             });            
 
-            // Register pages & models
+            // Register main page & model
             builder.Services.AddTransient<MainPageModel>();
             builder.Services.AddTransient<MainPage>();
-            builder.Services.AddTransient<EditDataItemPageModel>();
-            builder.Services.AddTransient<EditDataItemPage>();
+
+            // Register data item pages & models
+            // TODO: Consider using reflection
+            builder.Services.AddTransient<EditDefaultPageModel>();
+            builder.Services.AddTransient<EditDefaultPage>();
             builder.Services.AddTransient<EditBankAccountPageModel>();
             builder.Services.AddTransient<EditBankAccountPage>();
             builder.Services.AddTransient<EditCreditCardPageModel>();

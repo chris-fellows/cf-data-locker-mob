@@ -7,27 +7,36 @@ using System.Text;
 using System.Threading.Tasks;
 using Android.Media;
 using CFDataLocker.Interfaces;
+using CFDataLocker.Models;
 
-namespace CFDataLocker.Models
+namespace CFDataLocker.ViewModels
 {
-    public abstract class EditDataItemModelBase<TItemType> where TItemType : DataItemBase, INotifyPropertyChanged
+    //public class EditDataItemPageModel : EditDataItemModelBase<DataItemDefault>
+    //{
+    //    public EditDataItemPageModel(IDataLockerService dataLockerService) : base(dataLockerService) { }    
+    //}
+
+    /// <summary>
+    /// Model for edit of default data item
+    /// </summary>
+    public class EditDefaultPageModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler? PropertyChanged;
         public LocalizationResources LocalizationResources => LocalizationResources.Instance;
 
-        protected DataLocker _dataLocker = new DataLocker();
-        protected TItemType _dataItem = default(TItemType);
-        protected readonly IDataLockerService _dataLockerService;
+        private DataLocker _dataLocker = new DataLocker();
+        private DataItemDefault _dataItem = new DataItemDefault();
+        private readonly IDataLockerService _dataLockerService;
 
         public void OnPropertyChanged([CallerMemberName] string name = "") =>
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
 
-        public EditDataItemModelBase(IDataLockerService dataLockerService)
+        public EditDefaultPageModel(IDataLockerService dataLockerService)
         {
             _dataLockerService = dataLockerService;
         }
 
-        protected string _dataLockerId;
+        private string _dataLockerId;
         public string DataLockerId
         {
             set
@@ -37,7 +46,7 @@ namespace CFDataLocker.Models
             }
         }
 
-        protected string _dataItemId;
+        private string _dataItemId;
 
         public string DataItemId
         {
@@ -51,19 +60,19 @@ namespace CFDataLocker.Models
         /// <summary>
         /// Handles incoming query property set
         /// </summary>
-        protected void OnQueryPropertySet()
+        private void OnQueryPropertySet()
         {
-            if (!String.IsNullOrEmpty(_dataLockerId) &&
-                !String.IsNullOrEmpty(_dataItemId))     // Load data locker & item
+            if (!string.IsNullOrEmpty(_dataLockerId) &&
+                !string.IsNullOrEmpty(_dataItemId))     // Load data locker & item
             {
                 _dataLocker = _dataLockerService.GetById(_dataLockerId);
-                _dataItem = (TItemType)_dataLocker.DataItems.First(di => di.Id == _dataItemId);
+                _dataItem = (DataItemDefault)_dataLocker.DataItems.First(di => di.Id == _dataItemId);
 
                 OnPropertyChanged(nameof(SelectedDataItem));
             }
         }
 
-        public TItemType SelectedDataItem
+        public DataItemDefault SelectedDataItem
         {
             get { return _dataItem; }
         }

@@ -1,27 +1,19 @@
-﻿using Android.Net;
-using Java.Net;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CFDataLocker.Models
+﻿namespace CFDataLocker.Models
 {
     /// <summary>
     /// Credit card data item
     /// </summary>
     public class DataItemCreditCard : DataItemBase, ICloneable
     {
-        public string CardNumber { get; set; }
+        public string CardNumber { get; set; } = String.Empty;
 
-        public string SecurityCode { get; set;  }
+        public string SecurityCode { get; set; } = String.Empty;
 
-        public string ExpiryDate { get; set; }
+        public string ExpiryDate { get; set; } = String.Empty;
 
-        public string Pin { get; set; }
+        public string Pin { get; set; } = String.Empty;
 
-        public string CardType { get; set; }
+        public string CardType { get; set; } = String.Empty;
 
         public override object Clone()
         {
