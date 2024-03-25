@@ -74,7 +74,8 @@ public partial class EditDefaultPage : ContentPage
 		var messages = GetValidationErrors();
 		if (messages.Any())	// Invalid
 		{
-			DisplayAlert(_model.LocalizationResources["Error"].ToString(), messages[0], "OK");
+			DisplayAlert(_model.LocalizationResources["Error"].ToString(), messages[0],
+							_model.LocalizationResources["OK"].ToString());
 		}
 		else   // Save
 		{

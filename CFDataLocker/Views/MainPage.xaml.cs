@@ -65,12 +65,22 @@ namespace CFDataLocker
             }
         }
 
-        private void EditBtn_Clicked(object sender, EventArgs e)
+        private async void EditBtn_Clicked(object sender, EventArgs e)
         {
             var dataItem = (DataItemBase)DataItemsList.SelectedItem;
             if (dataItem != null)
             {
-                _model.EditDataItem(dataItem);
+                var isAuthenticated = await _model.CheckFingerprint();
+                if (isAuthenticated)
+                {
+                    _model.EditDataItem(dataItem);
+                }
+                else    // Failed
+                {
+                    await DisplayAlert(_model.LocalizationResources["Error"].ToString(),
+                            _model.LocalizationResources["FingerPrintAuthenticationFailed"].ToString(),
+                            _model.LocalizationResources["OK"].ToString());
+                }
             }
         }
 

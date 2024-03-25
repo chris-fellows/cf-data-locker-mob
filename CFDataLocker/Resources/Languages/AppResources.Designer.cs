@@ -340,6 +340,33 @@ namespace CFDataLocker.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Fingerprint authentication failed.
+        /// </summary>
+        internal static string FingerPrintAuthenticationFailed {
+            get {
+                return ResourceManager.GetString("FingerPrintAuthenticationFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit data item.
+        /// </summary>
+        internal static string FingerprintReasonEditDataItem {
+            get {
+                return ResourceManager.GetString("FingerprintReasonEditDataItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please swipe your finger.
+        /// </summary>
+        internal static string FingerprintTitle {
+            get {
+                return ResourceManager.GetString("FingerprintTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Information.
         /// </summary>
         internal static string Information {

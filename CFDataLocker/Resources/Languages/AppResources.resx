@@ -210,6 +210,15 @@
   <data name="Error" xml:space="preserve">
     <value>Error</value>
   </data>
+  <data name="FingerPrintAuthenticationFailed" xml:space="preserve">
+    <value>Fingerprint authentication failed</value>
+  </data>
+  <data name="FingerprintReasonEditDataItem" xml:space="preserve">
+    <value>Edit data item</value>
+  </data>
+  <data name="FingerprintTitle" xml:space="preserve">
+    <value>Please swipe your finger</value>
+  </data>
   <data name="Information" xml:space="preserve">
     <value>Information</value>
   </data>

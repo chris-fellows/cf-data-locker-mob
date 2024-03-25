@@ -7,6 +7,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Android.Runtime;
 using System.Reflection;
 using CFDataLocker.ViewModels;
+using Plugin.Fingerprint;
+using Plugin.Fingerprint.Abstractions;
 
 namespace CFDataLocker
 {
@@ -49,6 +51,9 @@ namespace CFDataLocker
             builder.Services.AddTransient<EditCreditCardPage>();
             builder.Services.AddTransient<EditDocumentPageModel>();
             builder.Services.AddTransient<EditDocumentPage>();
+
+            // Register fingerprint reader
+            builder.Services.AddSingleton(typeof(IFingerprint), CrossFingerprint.Current);
 
 #if DEBUG
             builder.Logging.AddDebug();

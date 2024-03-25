@@ -21,7 +21,6 @@ How to Add a Document (E.g. Photo)
 
 Comments
 --------
-- Add more security when viewing data items. Biometrics, pin etc.
 - UI needs cleaning up.
 - Models for data item views need to be refactored to share code because they're similar.
 - Document image needs functions to show the image full screen.

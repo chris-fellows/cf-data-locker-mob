@@ -224,11 +224,11 @@ namespace CFDataLocker.Services
         }
 
         private void Decrypt(DataItemDocument dataItem)
-        {
+        {            
             dataItem.Id = _encryptionService.DecryptFromBase64String(dataItem.Id);
             dataItem.Name = _encryptionService.DecryptFromBase64String(dataItem.Name);
             dataItem.Notes = _encryptionService.DecryptFromBase64String(dataItem.Notes);
-            dataItem.FilePath = _encryptionService.DecryptFromBase64String(dataItem.FilePath);
+            dataItem.FilePath = _encryptionService.DecryptFromBase64String(dataItem.FilePath);         
         }
     }
 }

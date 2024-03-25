@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+//using Android.OS;
 using CFDataLocker.Interfaces;
 using CFDataLocker.Models;
-using Kotlin.Reflect;
+using Plugin.Fingerprint.Abstractions;
 
 namespace CFDataLocker.ViewModels
 {
@@ -30,16 +31,23 @@ namespace CFDataLocker.ViewModels
 
         private List<DataItemType> _dataItemTypes;
 
+        private readonly IFingerprint _fingerprint;
+
+        public bool IsNeedFingerPrint => true;      // Default
+
         public MainPageModel(IDataItemTypeService dataItemTypeService,
-                            IDataLockerService dataLockerService)
+                            IDataLockerService dataLockerService,
+                            IFingerprint fingerprint)
         {
-            _dataItemTypeService = dataItemTypeService;
+            _dataItemTypeService = dataItemTypeService;            
 
             // Set data item types
             _dataItemTypes = _dataItemTypeService.GetAll();
             SelectedDataItemType = _dataItemTypes.First();
 
             _dataLockerService = dataLockerService;
+
+            _fingerprint = fingerprint;
 
             // Get data locker for user, create if not exists
             _dataLocker = _dataLockerService.GetByUserName(Environment.UserName);
@@ -132,6 +140,45 @@ namespace CFDataLocker.ViewModels
 
                 OnPropertyChanged(nameof(SelectedDataItem));
                 OnPropertyChanged(nameof(IsDataItemSelected));
+            }
+        }
+
+        /// <summary>
+        /// Checks user fingerprint
+        /// </summary>
+        /// <returns>Whether authenticated</returns>
+        public async Task<bool> CheckFingerprint()
+        {            
+            if (IsNeedFingerPrint)
+            {
+                /*
+                var dialogConfig = new AuthenticationRequestConfiguration
+                      ("Login using biometrics", "Confirm login with your biometrics")
+                        {
+                            FallbackTitle = "Use Password",
+                            AllowAlternativeAuthentication = true,
+                        };
+
+                        var resultXX = await _fingerprint.AuthenticateAsync(dialogConfig);
+                */                
+               
+                var isAuthenticated = false;
+                var isAvailable = await _fingerprint.IsAvailableAsync();                
+                if (isAvailable)
+                {
+                    var request = new AuthenticationRequestConfiguration(LocalizationResources.Instance["FingerprintTitle"].ToString(),
+                               LocalizationResources.Instance["FingerprintReasonEditDataItem"].ToString());
+
+                    var result = await _fingerprint.AuthenticateAsync(request);
+
+                    isAuthenticated = result.Authenticated;
+                }
+
+                return isAuthenticated;
+            }
+            else
+            {
+                return true;
             }
         }
     }
